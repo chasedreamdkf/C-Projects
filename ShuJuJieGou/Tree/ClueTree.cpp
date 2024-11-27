@@ -10,7 +10,7 @@ typedef struct tree {
     struct tree* rchild;
 } Tree;
 
-Tree *pre, *next;
+Tree *pre;
 
 void TreeCreatePrelude(Tree* &T) {
     /*先序遍历创建二叉树*/
@@ -19,7 +19,6 @@ void TreeCreatePrelude(Tree* &T) {
     if (c != '#') {
         T = new Tree;
         T->data = c;
-        T->ltag = T->rtag = 0;
         TreeCreatePrelude(T->lchild);
         TreeCreatePrelude(T->rchild);
     }
@@ -28,46 +27,57 @@ void TreeCreatePrelude(Tree* &T) {
     }
 }
 
-void PreludeTree(Tree* T) {
+void PreludeTreeOut(Tree* T) {
     /*先序遍历输出二叉树*/
     if (T) {
         cout << T->data;
-        PreludeTree(T->lchild);
-        PreludeTree(T->rchild);
+        PreludeTreeOut(T->lchild);
+        PreludeTreeOut(T->rchild);
     }
 }
 
-void PostTree(Tree* T) {
+void PostTreeOut(Tree* T) {
     /*后序遍历输出二叉树*/
     if (T) {
-        PostTree(T->lchild);
-        PostTree(T->rchild);
+        PostTreeOut(T->lchild);
+        PostTreeOut(T->rchild);
         cout << T->data;
     }
 }
 
-void InorderTree(Tree* T, char &c) {
-    /*中序遍历二叉树*/
+void InorderTreeOut(Tree* T) {
+    /*中序遍历输出二叉树*/
     if (T) {
-        c = T->data;
-        char a, b;
-        InorderTree(T->lchild, a);
-        /*if(T->data != '+' && T->data != '-' && T->data != '*' && T->data != '/')
-            cout << "(";*/
-        cout << c;
-        InorderTree(T->rchild, b);
-        
+        InorderTreeOut(T->lchild);
+        cout << T->data;
+        InorderTreeOut(T->rchild);
     }
+}
+
+void TreeClueInorder(Tree* p){
+    /*中序遍历线索化二叉树*/
+    TreeClueInorder(p->lchild);     /*左子树递归线索化*/
+    if(!p->lchild){                 /*p 没有左孩子*/
+        p->ltag = 1;                /*给p加上左线索*/
+        p->lchild = pre;            /*p的左孩子指针指向pre(前驱)*/
+    }
+    else p->ltag = 0;
+    if(!pre->rchild){               /*pre 没有右孩子*/
+        pre->rtag = 1;              /*给pre加上右线索*/
+        pre->rchild = p;            /*pre的右孩子指针指向p(后继)*/
+    }
+    else pre->rtag = 0;
+    pre = p;                        /*保持前驱指针pre指向p*/
+    TreeClueInorder(p->rchild);     /*右子树递归线索化*/
 }
 
 int main() {
     Tree* T;
     TreeCreatePrelude(T);
-    /*PreludeTree(T);
-    cout << endl;*/
-    /*PostTree(T);
-    cout << endl;*/
     char c;
-    InorderTree(T, c);
+    InorderTreeOut(T);
+    cout << endl;
+    TreeClueInorder(T);
+    /*输出中序线索化二叉树*/
     return 0;
 }
