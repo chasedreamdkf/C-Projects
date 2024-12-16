@@ -8,7 +8,7 @@ typedef struct tree {
 } Tree;
 
 void TreeCreate(Tree* &T) {
-    /*ÏÈÐò±éÀú´´½¨¶þ²æÊ÷*/
+    /*å…ˆåºéåŽ†åˆ›å»ºäºŒå‰æ ‘*/
     char c;
     cin >> c;
     if (c != '#') {
@@ -23,7 +23,7 @@ void TreeCreate(Tree* &T) {
 }
 
 void PreludeTree(Tree* T) {
-    /*ÏÈÐò±éÀúÊä³ö¶þ²æÊ÷*/
+    /*å…ˆåºéåŽ†è¾“å‡ºäºŒå‰æ ‘*/
     if (T) {
         cout << T->data;
         PreludeTree(T->lchild);
@@ -32,7 +32,7 @@ void PreludeTree(Tree* T) {
 }
 
 void PostTree(Tree* T) {
-    /*ºóÐò±éÀúÊä³ö¶þ²æÊ÷*/
+    /*åŽåºéåŽ†è¾“å‡ºäºŒå‰æ ‘*/
     if (T) {
         PostTree(T->lchild);
         PostTree(T->rchild);
@@ -41,7 +41,7 @@ void PostTree(Tree* T) {
 }
 
 void InorderTree(Tree* T){
-    /*ÖÐÐò±éÀú¶þ²æÊ÷*/
+    /*ä¸­åºéåŽ†äºŒå‰æ ‘*/
     if (T) {
         InorderTree(T->lchild);
         cout << T->data;
@@ -50,9 +50,9 @@ void InorderTree(Tree* T){
 }
 
 
-/*²âÊÔÊäÈë£¬Ã¿ÐÐÊÇÒ»¿Ã¶þ²æÊ÷µÄÌØÊâÐÎÊ½µÄÇ°ÐòÐò±éÀú±àÂëÐòÁÐ£º
+/*æµ‹è¯•è¾“å…¥ï¼Œæ¯è¡Œæ˜¯ä¸€æ£µäºŒå‰æ ‘çš„ç‰¹æ®Šå½¢å¼çš„å‰åºåºéåŽ†ç¼–ç åºåˆ—ï¼š
 -+a##*b##-c##d##/e##f##
-Ô¤ÆÚÊä³ö¼ÓÁËÀ¨ºÅµÄÖÐ×ºÐÎÊ½µÄ±í´ïÊ½£º
+é¢„æœŸè¾“å‡ºåŠ äº†æ‹¬å·çš„ä¸­ç¼€å½¢å¼çš„è¡¨è¾¾å¼ï¼š
 ((a+(b*(c-d)))-(e/f))
 */
 void InorderTree2(Tree* T){
@@ -73,9 +73,9 @@ void InorderTree2(Tree* T){
 }
 
 
-/*²âÊÔÊäÈë£¬Ã¿ÐÐÊÇÒ»¿Ã¶þ²æÊ÷µÄÌØÊâÐÎÊ½µÄÇ°ÐòÐò±éÀú±àÂëÐòÁÐ£º
+/*æµ‹è¯•è¾“å…¥ï¼Œæ¯è¡Œæ˜¯ä¸€æ£µäºŒå‰æ ‘çš„ç‰¹æ®Šå½¢å¼çš„å‰åºåºéåŽ†ç¼–ç åºåˆ—ï¼š
 -+a##*b##-c##d##/e##f##
-Ô¤ÆÚÊä³ö¼ÓÁËÀ¨ºÅµÄÖÐ×ºÐÎÊ½µÄ±í´ïÊ½£º
+é¢„æœŸè¾“å‡ºåŠ äº†æ‹¬å·çš„ä¸­ç¼€å½¢å¼çš„è¡¨è¾¾å¼ï¼š
 a+b*(c-d)-e/f
 */
 void InorderTree3(Tree* T){
@@ -100,10 +100,10 @@ void InorderTree3(Tree* T){
 
 
 /*
-ÓÃºóÐò±éÀúµÄ·½·¨ÊµÏÖ¼ÆËã±í´ïÊ½ÖµµÄËã·¨
-²âÊÔÊäÈë£¬Ã¿ÐÐÊÇÒ»¿Ã±íÊ¾±í´ïÊ½µÄ¶þ²æÊ÷µÄÌØÊâÐÎÊ½µÄÇ°ÐòÐò±éÀú±àÂëÐòÁÐ£º
+ç”¨åŽåºéåŽ†çš„æ–¹æ³•å®žçŽ°è®¡ç®—è¡¨è¾¾å¼å€¼çš„ç®—æ³•
+æµ‹è¯•è¾“å…¥ï¼Œæ¯è¡Œæ˜¯ä¸€æ£µè¡¨ç¤ºè¡¨è¾¾å¼çš„äºŒå‰æ ‘çš„ç‰¹æ®Šå½¢å¼çš„å‰åºåºéåŽ†ç¼–ç åºåˆ—ï¼š
 +1##*2##+3##4##
-Ô¤ÆÚÊä³öÊÇÏàÓ¦±í´ïÊ½µÄÖµ£º
+é¢„æœŸè¾“å‡ºæ˜¯ç›¸åº”è¡¨è¾¾å¼çš„å€¼ï¼š
 15
 */
 int Evaluate(Tree* T){
