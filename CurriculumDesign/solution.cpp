@@ -263,6 +263,20 @@ Polys Polys_Derivative(Polys P){
 
     // 尾指针
     Poly* newp = newP.head;
+    Poly* p = P.head->next;
+
+    for(int i = 1; i <= P.length; i++, p = p->next){
+        if(p->e == 0) continue;         // 常数项, 导数为零, 跳到下一项
+
+        Poly* t = new Poly;
+        t->c = p->c * p->e;
+        t->e = p->e - 1;
+        t->next = NULL;
+        newP.length++;
+        
+        newp->next = t;
+        newp = t;
+    }
     return newP;
 }
 
@@ -271,24 +285,8 @@ int main(){
     InitPolys(P1);
     CreatePolys(P1);
 
-    InitPolys(P2);
-    CreatePolys(P2);
-
-    Polys PA = AddPolys(P1, P2);
-    cout << "P1 + P2:  ";
-    OutPutPolys(PA);
-
-    PA = AddPolys(P2, P1);
-    cout << "P2 + P1:  ";
-    OutPutPolys(PA);
-
-    Polys PS = SubPolys(P1, P2);
-    cout << "P1 - P2:  ";
-    OutPutPolys(PS);
-
-    PS = SubPolys(P2, P1);
-    cout << "P2 - P1:  ";
-    OutPutPolys(PS);
+    Polys Pd = Polys_Derivative(P1);
+    OutPutPolys(Pd);
 
     return 0;
 }
