@@ -280,13 +280,58 @@ Polys Polys_Derivative(Polys P){
     return newP;
 }
 
+// 两个多项式相乘
+Polys MultiPolys(Polys P1, Polys P2){
+    SortPolys(P1);
+    SortPolys(P2);
+
+    Polys LastP;
+    InitPolys(LastP);
+
+    // if P1 == 0 Or P2 == 0
+    if(!P1.length || !P2.length) return LastP;
+    // if P1 != 0 And P2 != 0
+    Poly* p1 = P1.head->next;
+    for(int i = 1; i <= P1.length; i++){
+        Polys TP;
+        InitPolys(TP);
+        Poly* rear = TP.head;
+
+        Poly* p2 = P2.head->next;
+        for(int j = 1; j <= P2.length; j++){
+            Poly* t = new Poly;
+            t->c = p1->c * p2->c;
+            t->e = p1->e + p2->e;
+            t->next = NULL;
+
+            rear->next = t;
+            rear = t;
+
+            TP.length++;
+
+            p2 = p2->next;
+        }
+
+        LastP = AddPolys(LastP, TP);
+
+        p1 = p1->next;
+    }
+
+    return LastP;
+}
+
 int main(){
-    Polys P1, P2;
+    Polys P1;
     InitPolys(P1);
     CreatePolys(P1);
 
-    Polys Pd = Polys_Derivative(P1);
-    OutPutPolys(Pd);
+    Polys P2;
+    InitPolys(P2);
+    CreatePolys(P2);
+
+    Polys P3 = MultiPolys(P1, P2);
+    cout << "P1 X P2 = ";
+    OutPutPolys(P3);
 
     return 0;
 }
