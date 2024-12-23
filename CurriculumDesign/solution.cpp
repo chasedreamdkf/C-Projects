@@ -50,13 +50,14 @@ void OutPutPolys(Polys P){
     }
     for(int i = 0; i < P.length; i++){
         if(i && p->c > 0) cout << "+";
-        if(p->c == -1) cout << "-";
+        if(p->c == -1 && p->e) cout << "-";
+        else if(p->c == 1 && !p->e) cout << p->c;
         else if(p->c != 1) cout << p->c;
         if(p->e != 0){
             cout << "x";
             if(p->e != 1) cout << "^" << p->e;
         }
-        else if(!p->e) cout << p->c;
+        
         p = p->next;
     }
     cout << endl;
@@ -328,6 +329,13 @@ int main(){
     Polys P2;
     InitPolys(P2);
     CreatePolys(P2);
+
+    // Polys P3 = AddPolys(P1, P2);
+    // cout << "P1 + P2 = ";
+    // OutPutPolys(P3);
+    // P3 = SubPolys(P1, P2);
+    // cout << "P1 - P2 = ";
+    // OutPutPolys(P3);
 
     Polys P3 = MultiPolys(P1, P2);
     cout << "P1 X P2 = ";
