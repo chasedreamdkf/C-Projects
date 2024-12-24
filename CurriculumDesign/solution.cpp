@@ -11,56 +11,19 @@ typedef struct Poly{
 
 // 多项式
 typedef struct Polys{
+    int num;                            // 多项式编号
     int length;                         // 多项式长度
     Poly *head;                         // 多项式头节点
 } Polys;
 
 // 初始化多项式
 void InitPolys(Polys &P){
+    static int num = 1;
+    P.num = num;
     P.length = 0;
     P.head = new Poly;
     P.head->next = NULL;
-}
-
-// 建立多项式(尾插法)
-void CreatePolys(Polys &P){
-    static int count = 1;
-    Poly* rear = P.head;
-    cout << "请输入多项式" << "P" << count << "的项数: ";
-    cin >> P.length;
-    for(int i = 1; i <= P.length; i++){
-        Poly* p = new Poly;
-        cout << "请输入第" << i << "项的系数(带符号): ";
-        cin >> p->c;
-        cout << "请输入第" << i << "项的指数(带符号): ";
-        cin >> p->e;
-        p->next = rear->next;
-        rear->next = p;
-        rear = p;
-    }
-    count++;
-}
-
-// 输出多项式
-void OutPutPolys(Polys P){
-    Poly *p = P.head->next;
-    if(p == NULL){
-        cout << 0 <<endl;
-        return;
-    }
-    for(int i = 0; i < P.length; i++){
-        if(i && p->c > 0) cout << "+";
-        if(p->c == -1 && p->e) cout << "-";
-        else if(p->c == 1 && !p->e) cout << p->c;
-        else if(p->c != 1) cout << p->c;
-        if(p->e != 0){
-            cout << "x";
-            if(p->e != 1) cout << "^" << p->e;
-        }
-        
-        p = p->next;
-    }
-    cout << endl;
+    num++;
 }
 
 // 按指数e降序对多项式排序(冒泡)
@@ -84,11 +47,65 @@ void SortPolys(Polys &P){
     }
 }
 
+// 简化(合并同类项)多项式
+void SimplifyPolys(Polys &P){
+    SortPolys(P);
+    Poly *p = P.head->next;
+    for(int i = 1; i < P.length; i++){
+        if(p->e == p->next->e){
+            p->c += p->next->c;
+            Poly* q = p->next;
+            p->next = q->next;
+            delete q;
+            --P.length;
+        }
+        p = p->next;
+    }
+}
+
+// 建立多项式(尾插法)
+void CreatePolys(Polys &P){
+    Poly* rear = P.head;
+    cout << "请输入多项式" << "P" << P.num << "的项数: ";
+    cin >> P.length;
+    for(int i = 1; i <= P.length; i++){
+        Poly* p = new Poly;
+        cout << "请输入第" << i << "项的系数(带符号)、指数(带符号): ";
+        cin >> p->c >> p->e;
+        p->next = rear->next;
+        rear->next = p;
+        rear = p;
+    }
+    SimplifyPolys(P);
+}
+
+// 输出多项式
+void OutPutPolys(Polys P, bool line_feed = true){
+    /**line_feed: 是否换行，默认为true */
+    Poly *p = P.head->next;
+    if(p == NULL){
+        cout << 0;
+        if(line_feed) cout << endl;
+        return;
+    }
+    for(int i = 0; i < P.length; i++){
+        if(i && p->c > 0) cout << "+";
+        if(p->c == -1 && p->e) cout << "-";
+        else if(p->c == 1 && !p->e) cout << p->c;
+        else if(p->c != 1) cout << p->c;
+        if(p->e != 0){
+            cout << "x";
+            if(p->e != 1) cout << "^" << p->e;
+        }
+        
+        p = p->next;
+    }
+    if(line_feed)
+        cout << '\n';
+}
+
 // 多项式加法
 Polys AddPolys(Polys P1, Polys P2){
-    SortPolys(P1);
-    SortPolys(P2);
-
     // 计数器，判定是否到达多项式尾部(不知为什么创建多项式时会多处一项，c、e超出范围)
     int count1 = 0, count2 = 0;
 
@@ -152,9 +169,6 @@ Polys AddPolys(Polys P1, Polys P2){
 
 // 多项式减法
 Polys SubPolys(Polys P1, Polys P2){
-    SortPolys(P1);
-    SortPolys(P2);
-
     // 计数器，判定是否到达多项式尾部(不知为什么创建多项式时会多处一项，c、e超出范围)
     int count1 = 0, count2 = 0;
 
@@ -169,7 +183,7 @@ Polys SubPolys(Polys P1, Polys P2){
 
     // if P1 == 0
     if(!p1){
-        // P1 = 0时，对P2的系数取相反数
+        // P1 == 0时，对P2的系数取相反数
         while(count2 < P2.length){
             Poly* p = new Poly;
             // 取相反数
@@ -283,9 +297,6 @@ Polys Polys_Derivative(Polys P){
 
 // 两个多项式相乘
 Polys MultiPolys(Polys P1, Polys P2){
-    SortPolys(P1);
-    SortPolys(P2);
-
     Polys LastP;
     InitPolys(LastP);
 
@@ -298,6 +309,7 @@ Polys MultiPolys(Polys P1, Polys P2){
         InitPolys(TP);
         Poly* rear = TP.head;
 
+        // 将P1的第i项与P2相乘，结果存放在TP中
         Poly* p2 = P2.head->next;
         for(int j = 1; j <= P2.length; j++){
             Poly* t = new Poly;
@@ -313,6 +325,7 @@ Polys MultiPolys(Polys P1, Polys P2){
             p2 = p2->next;
         }
 
+        // 将TP加入LastP中
         LastP = AddPolys(LastP, TP);
 
         p1 = p1->next;
@@ -321,25 +334,129 @@ Polys MultiPolys(Polys P1, Polys P2){
     return LastP;
 }
 
+// 菜单
+void menu(){
+    cout << "|===============多项式计算===============|" << endl;
+    cout << "|--------------1.多项式加法--------------|" << endl;
+    cout << "|--------------2.多项式减法--------------|" << endl;
+    cout << "|--------------3.多项式求导--------------|" << endl;
+    cout << "|-----------4.多项式在X处的值------------|" << endl;
+    cout << "|--------------5.多项式乘法--------------|" << endl;
+    cout << "|请输入数字以选择功能, 其他数字退出: ";
+}
+
+// 退出程序
+void quit(){
+    // system("clear");     // 仅在Linux环境下使用
+    // system("cls");          // 仅在Windows环境下使用
+    cout << "感谢使用稀疏多项式计算器！\n再见！" << endl;
+}
+
+// 用户界面
+void UserGraph(){
+    int flag = 0;
+    do{
+        menu();
+        cin >> flag;
+        switch (flag){
+            case 1:{
+                Polys P1, P2;
+                InitPolys(P1);
+                CreatePolys(P1);
+                InitPolys(P2);
+                CreatePolys(P2);
+                Polys P3 = AddPolys(P1, P2);
+                cout << '(';
+                OutPutPolys(P1, false);
+                cout << ") + (";
+                OutPutPolys(P2, false);
+                cout << ") = ";
+                OutPutPolys(P3);
+
+                P3 = AddPolys(P2, P1);
+                cout << '(';
+                OutPutPolys(P2, false);
+                cout << ") + (";
+                OutPutPolys(P1, false);
+                cout << ") = ";
+                OutPutPolys(P3);
+            }; break;
+            case 2: {
+                Polys P1, P2;
+                InitPolys(P1);
+                CreatePolys(P1);
+                InitPolys(P2);
+                CreatePolys(P2);
+
+                Polys P3 = SubPolys(P1, P2);
+                cout << '(';
+                OutPutPolys(P1, false);
+                cout << ") - (";
+                OutPutPolys(P2, false);
+                cout << ") = ";
+                OutPutPolys(P3);
+
+                P3 = SubPolys(P2, P1);
+                cout << '(';
+                OutPutPolys(P2, false);
+                cout << ") - (";
+                OutPutPolys(P1, false);
+                cout << ") = ";
+                OutPutPolys(P3);
+            }; break;
+            case 3: {
+                Polys P1;
+                InitPolys(P1);
+                CreatePolys(P1);
+                Polys P3 = Polys_Derivative(P1);
+                cout << "P" << P1.num << "' = ";
+                OutPutPolys(P3);
+            }; break;
+            case 4: {
+                Polys P1;
+                InitPolys(P1);
+                CreatePolys(P1);
+                float sum = Polys_Val_In_X(P1);
+                OutPutPolys(P1, false);
+                cout << " = " << sum << endl;
+            }; break;
+            case 5: {
+                Polys P1, P2;
+                InitPolys(P1);
+                CreatePolys(P1);
+                InitPolys(P2);
+                CreatePolys(P2);
+
+                Polys P3 = MultiPolys(P1, P2);
+                cout << '(';
+                OutPutPolys(P1, false);
+                cout << ") + (";
+                OutPutPolys(P2, false);
+                cout << ") = ";
+                OutPutPolys(P3);
+
+                P3 = MultiPolys(P2, P1);
+                cout << '(';
+                OutPutPolys(P2, false);
+                cout << ") + (";
+                OutPutPolys(P1, false);
+                cout << ") = ";
+                OutPutPolys(P3);
+            }; break;
+            
+            default: {
+                flag = 0;
+                quit();
+            } ;break;
+        }
+        // 下面两条仅在Windows环境下使用
+        // system("pause");
+        // system("cls");
+        
+    }while(flag);
+}
+
 int main(){
-    Polys P1;
-    InitPolys(P1);
-    CreatePolys(P1);
-
-    Polys P2;
-    InitPolys(P2);
-    CreatePolys(P2);
-
-    // Polys P3 = AddPolys(P1, P2);
-    // cout << "P1 + P2 = ";
-    // OutPutPolys(P3);
-    // P3 = SubPolys(P1, P2);
-    // cout << "P1 - P2 = ";
-    // OutPutPolys(P3);
-
-    Polys P3 = MultiPolys(P1, P2);
-    cout << "P1 X P2 = ";
-    OutPutPolys(P3);
-
+    UserGraph();
     return 0;
 }
