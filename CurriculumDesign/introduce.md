@@ -1,4 +1,5 @@
 # 这个是数据结构课设
+---
 
 #### 一、数据结构
 - **Poly&nbsp;&nbsp;&nbsp;:**&nbsp;&nbsp;多项式的每一项
@@ -16,3 +17,6 @@
 - **Polys_Derivative(Polys P)&nbsp;&nbsp;:**&nbsp;&nbsp;求多项式&nbsp;**P**&nbsp;导数&nbsp;**P’**，返回&nbsp;**P’**
 - **MultiPolys(Polys P1, Polys P2)&nbsp;&nbsp;:**&nbsp;&nbsp;多项式乘法，返回&nbsp;**P1 X P2**&nbsp;的值
 - **UserGraph(void)&nbsp;&nbsp;:**&nbsp;&nbsp;用户界面
+
+#### 三、函数实现过程
+- **1.&nbsp;InitPolys(Polys &P)&nbsp;&nbsp;:&nbsp;初始化多项式**<br>

@@ -20,9 +20,9 @@ typedef struct Polys{
 void InitPolys(Polys &P){
     static int num = 1;
     P.num = num;
-    P.length = 0;
+    P.length = 0;                       // 多项式初始长度为0
     P.head = new Poly;
-    P.head->next = NULL;
+    P.head->next = NULL;                // 初始多项式链表为空
     num++;
 }
 
@@ -32,7 +32,7 @@ void SortPolys(Polys &P){
     for(int i = 0; i < P.length; i++){
         Poly* q = p->next;
         for(int j = i + 1; j < P.length; j++){
-            if(q->e > p->e){
+            if(q->e > p->e){            // 交换数据
                 float c_t = q->c, e_t = q->e;
                 
                 q->c = p->c;
@@ -49,10 +49,10 @@ void SortPolys(Polys &P){
 
 // 简化(合并同类项)多项式
 void SimplifyPolys(Polys &P){
-    SortPolys(P);
+    SortPolys(P);                       // 先对多项式排序
     Poly *p = P.head->next;
     for(int i = 1; i < P.length; i++){
-        if(p->e == p->next->e){
+        if(p->e == p->next->e){         // 将相邻的项合并，多项式长度减1
             p->c += p->next->c;
             Poly* q = p->next;
             p->next = q->next;
@@ -81,7 +81,7 @@ void CreatePolys(Polys &P){
 
 // 输出多项式
 void OutPutPolys(Polys P, bool line_feed = true){
-    /**line_feed: 是否换行，默认为true */
+    /**line_feed: 输出结束是否换行，默认为true */
     Poly *p = P.head->next;
     if(p == NULL){
         cout << 0;
@@ -101,7 +101,7 @@ void OutPutPolys(Polys P, bool line_feed = true){
         p = p->next;
     }
     if(line_feed)
-        cout << '\n';
+        cout << endl;
 }
 
 // 多项式加法
