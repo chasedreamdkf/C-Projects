@@ -347,8 +347,8 @@ void menu(){
 
 // 退出程序
 void quit(){
-    // system("clear");     // 仅在Linux环境下使用
-    // system("cls");          // 仅在Windows环境下使用
+    //system("clear");     // 仅在Linux环境下使用
+    //system("cls");          // 仅在Windows环境下使用
     cout << "感谢使用稀疏多项式计算器！\n再见！" << endl;
 }
 
@@ -449,9 +449,9 @@ void UserGraph(){
                 quit();
             } ;break;
         }
-        // 下面两条仅在Windows环境下使用
-        // system("pause");
-        // system("cls");
+        //下面两条仅在Windows环境下使用
+        //system("pause");
+        //system("cls");
         
     }while(flag);
 }
