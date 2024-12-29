@@ -2,37 +2,37 @@
 #include <cmath>
 using namespace std;
 
-// å¤šé¡¹å¼çš„æ¯ä¸€é¡¹
+// ¶àÏîÊ½µÄÃ¿Ò»Ïî
 typedef struct Poly{
-    float c;                            // å¤šé¡¹å¼æ¯ä¸€é¡¹çš„ç³»æ•°
-    float e;                            // å¤šé¡¹å¼æ¯ä¸€é¡¹çš„æŒ‡æ•°
-    struct Poly* next;                  // å¤šé¡¹å¼çš„ä¸‹ä¸€é¡¹
+    float c;                            // ¶àÏîÊ½Ã¿Ò»ÏîµÄÏµÊı
+    float e;                            // ¶àÏîÊ½Ã¿Ò»ÏîµÄÖ¸Êı
+    struct Poly* next;                  // ¶àÏîÊ½µÄÏÂÒ»Ïî
 } Poly;
 
-// å¤šé¡¹å¼
+// ¶àÏîÊ½
 typedef struct Polys{
-    int num;                            // å¤šé¡¹å¼ç¼–å·
-    int length;                         // å¤šé¡¹å¼é•¿åº¦
-    Poly *head;                         // å¤šé¡¹å¼å¤´èŠ‚ç‚¹
+    int num;                            // ¶àÏîÊ½±àºÅ
+    int length;                         // ¶àÏîÊ½³¤¶È
+    Poly *head;                         // ¶àÏîÊ½Í·½Úµã
 } Polys;
 
-// åˆå§‹åŒ–å¤šé¡¹å¼
+// ³õÊ¼»¯¶àÏîÊ½
 void InitPolys(Polys &P){
     static int num = 1;
     P.num = num;
-    P.length = 0;                       // å¤šé¡¹å¼åˆå§‹é•¿åº¦ä¸º0
+    P.length = 0;                       // ¶àÏîÊ½³õÊ¼³¤¶ÈÎª0
     P.head = new Poly;
-    P.head->next = NULL;                // åˆå§‹å¤šé¡¹å¼é“¾è¡¨ä¸ºç©º
+    P.head->next = NULL;                // ³õÊ¼¶àÏîÊ½Á´±íÎª¿Õ
     num++;
 }
 
-// æŒ‰æŒ‡æ•°eé™åºå¯¹å¤šé¡¹å¼æ’åº(å†’æ³¡)
+// °´Ö¸Êıe½µĞò¶Ô¶àÏîÊ½ÅÅĞò(½»»»)
 void SortPolys(Polys &P){
     Poly* p = P.head->next;
     for(int i = 0; i < P.length; i++){
         Poly* q = p->next;
         for(int j = i + 1; j < P.length; j++){
-            if(q->e > p->e){            // äº¤æ¢æ•°æ®
+            if(q->e > p->e){            // ½»»»Êı¾İ
                 float c_t = q->c, e_t = q->e;
                 
                 q->c = p->c;
@@ -47,12 +47,12 @@ void SortPolys(Polys &P){
     }
 }
 
-// ç®€åŒ–(åˆå¹¶åŒç±»é¡¹)å¤šé¡¹å¼
+// ¼ò»¯(ºÏ²¢Í¬ÀàÏî)¶àÏîÊ½
 void SimplifyPolys(Polys &P){
-    SortPolys(P);                       // å…ˆå¯¹å¤šé¡¹å¼æ’åº
+    SortPolys(P);                       // ÏÈ¶Ô¶àÏîÊ½ÅÅĞò
     Poly *p = P.head->next;
     for(int i = 1; i < P.length; i++){
-        if(p->e == p->next->e){         // å°†ç›¸é‚»çš„é¡¹åˆå¹¶ï¼Œå¤šé¡¹å¼é•¿åº¦å‡1
+        if(p->e == p->next->e){         // ½«ÏàÁÚµÄÏîºÏ²¢£¬¶àÏîÊ½³¤¶È¼õ1
             p->c += p->next->c;
             Poly* q = p->next;
             p->next = q->next;
@@ -63,14 +63,14 @@ void SimplifyPolys(Polys &P){
     }
 }
 
-// å»ºç«‹å¤šé¡¹å¼(å°¾æ’æ³•)
+// ½¨Á¢¶àÏîÊ½(Î²²å·¨)
 void CreatePolys(Polys &P){
     Poly* rear = P.head;
-    cout << "è¯·è¾“å…¥å¤šé¡¹å¼" << "P" << P.num << "çš„é¡¹æ•°: ";
+    cout << "ÇëÊäÈë¶àÏîÊ½" << "P" << P.num << "µÄÏîÊı: ";
     cin >> P.length;
     for(int i = 1; i <= P.length; i++){
         Poly* p = new Poly;
-        cout << "è¯·è¾“å…¥ç¬¬" << i << "é¡¹çš„ç³»æ•°(å¸¦ç¬¦å·)ã€æŒ‡æ•°(å¸¦ç¬¦å·): ";
+        cout << "ÇëÊäÈëµÚ" << i << "ÏîµÄÏµÊı(´ø·ûºÅ)¡¢Ö¸Êı(´ø·ûºÅ): ";
         cin >> p->c >> p->e;
         p->next = rear->next;
         rear->next = p;
@@ -79,9 +79,9 @@ void CreatePolys(Polys &P){
     SimplifyPolys(P);
 }
 
-// è¾“å‡ºå¤šé¡¹å¼
+// Êä³ö¶àÏîÊ½
 void OutPutPolys(Polys P, bool line_feed = true){
-    /**line_feed: è¾“å‡ºç»“æŸæ˜¯å¦æ¢è¡Œï¼Œé»˜è®¤ä¸ºtrue */
+    /**line_feed: Êä³ö½áÊøÊÇ·ñ»»ĞĞ£¬Ä¬ÈÏÎªtrue */
     Poly *p = P.head->next;
     if(p == NULL){
         cout << 0;
@@ -104,28 +104,29 @@ void OutPutPolys(Polys P, bool line_feed = true){
         cout << endl;
 }
 
-// å¤šé¡¹å¼åŠ æ³•
+// ¶àÏîÊ½¼Ó·¨
 Polys AddPolys(Polys P1, Polys P2){
-    // è®¡æ•°å™¨ï¼Œåˆ¤å®šæ˜¯å¦åˆ°è¾¾å¤šé¡¹å¼å°¾éƒ¨(ä¸çŸ¥ä¸ºä»€ä¹ˆåˆ›å»ºå¤šé¡¹å¼æ—¶ä¼šå¤šå¤„ä¸€é¡¹ï¼Œcã€eè¶…å‡ºèŒƒå›´)
+    // ¼ÆÊıÆ÷£¬ÅĞ¶¨ÊÇ·ñµ½´ï¶àÏîÊ½Î²²¿(²»ÖªÎªÊ²Ã´´´½¨¶àÏîÊ½Ê±»á¶à´¦Ò»Ïî£¬c¡¢e³¬³ö·¶Î§)
     int count1 = 0, count2 = 0;
 
     Poly *p1 = P1.head->next;
     Poly *p2 = P2.head->next;
 
-    // if P1 == 0
+    // if P1 == 0, P1 + P2 = P2
     if(!p1) return P2;
-    // if P2 == 0
+    // if P2 == 0, P1 + P2 = P1
     if(!p2) return P1;
 
     Polys newP;
     InitPolys(newP);
 
-    // å°¾æŒ‡é’ˆ
+    // Î²Ö¸Õë
     Poly *newp = newP.head;
 
+    // ¶àÏîÊ½ÓĞĞò(Ö¸Êı½µĞò)¼Ó·¨
     while(count1 < P1.length && count2 < P2.length){
         Poly* p = new Poly;
-        // æŒ‡æ•°ç›¸åŒ, ç³»æ•°ç›¸åŠ 
+        // Ö¸ÊıÏàÍ¬, ÏµÊıÏà¼Ó
         if(p1->e == p2->e){
             p->e = p1->e;
             p->c = p1->c + p2->c;
@@ -135,20 +136,20 @@ Polys AddPolys(Polys P1, Polys P2){
             count1++;
             count2++;
         }
-        // è°æŒ‡æ•°å¤§, è°åœ¨å‰é¢å…¥é“¾è¡¨
+        // Ë­Ö¸Êı´ó, Ë­ÔÚÇ°ÃæÈëÁ´±í
         else if(p1->e > p2->e){
-            p->c = p1->c + 0;                   // æ­¤æ—¶ï¼Œä¸p1.eç›¸ç­‰çš„p2.eçš„ç³»æ•°c=0
+            p->c = p1->c + 0;                   // ´ËÊ±£¬Óëp1.eÏàµÈµÄp2.eµÄÏµÊıc=0
             p->e = p1->e;
             count1++;
             p1 = p1->next;
         }
         else if(p1->e < p2->e){
-            p->c = p2->c + 0;                   // æ­¤æ—¶ï¼Œä¸p2.eç›¸ç­‰çš„p1.eçš„ç³»æ•°c=0
+            p->c = p2->c + 0;                   // ´ËÊ±£¬Óëp2.eÏàµÈµÄp1.eµÄÏµÊıc=0
             p->e = p2->e;
             count2++;
             p2 = p2->next;
         }
-        // å°¾æ’
+        // Î²²å
         if(p){
             p->next = NULL;
             newp->next = p;
@@ -167,9 +168,9 @@ Polys AddPolys(Polys P1, Polys P2){
     return newP;
 }
 
-// å¤šé¡¹å¼å‡æ³•
+// ¶àÏîÊ½¼õ·¨
 Polys SubPolys(Polys P1, Polys P2){
-    // è®¡æ•°å™¨ï¼Œåˆ¤å®šæ˜¯å¦åˆ°è¾¾å¤šé¡¹å¼å°¾éƒ¨(ä¸çŸ¥ä¸ºä»€ä¹ˆåˆ›å»ºå¤šé¡¹å¼æ—¶ä¼šå¤šå¤„ä¸€é¡¹ï¼Œcã€eè¶…å‡ºèŒƒå›´)
+    // ¼ÆÊıÆ÷£¬ÅĞ¶¨ÊÇ·ñµ½´ï¶àÏîÊ½Î²²¿(²»ÖªÎªÊ²Ã´´´½¨¶àÏîÊ½Ê±»á¶à´¦Ò»Ïî£¬c¡¢e³¬³ö·¶Î§)
     int count1 = 0, count2 = 0;
 
     Poly *p1 = P1.head->next;
@@ -178,15 +179,15 @@ Polys SubPolys(Polys P1, Polys P2){
     Polys newP;
     InitPolys(newP);
 
-    // å°¾æŒ‡é’ˆ
+    // Î²Ö¸Õë
     Poly *newp = newP.head;
 
-    // if P1 == 0
+    // if P1 == 0, P1 - P2 = -P2
     if(!p1){
-        // P1 == 0æ—¶ï¼Œå¯¹P2çš„ç³»æ•°å–ç›¸åæ•°
+        // P1 == 0Ê±£¬¶ÔP2µÄÏµÊıÈ¡Ïà·´Êı
         while(count2 < P2.length){
             Poly* p = new Poly;
-            // å–ç›¸åæ•°
+            // È¡Ïà·´Êı
             p->c = -p2->c;
             p->e = p2->e;
             p->next = NULL;
@@ -200,12 +201,12 @@ Polys SubPolys(Polys P1, Polys P2){
         }
         return newP;
     }
-    // if P2 == 0
+    // if P2 == 0, P1 - P2 = P1
     if(!p2) return P1;
 
     while(count1 < P1.length && count2 < P2.length){
         Poly* p = new Poly;
-        // æŒ‡æ•°ç›¸åŒ, ç³»æ•°ç›¸å‡
+        // Ö¸ÊıÏàÍ¬, ÏµÊıÏà¼õ
         if(p1->e == p2->e){
             p->e = p1->e;
             p->c = p1->c - p2->c;
@@ -215,20 +216,20 @@ Polys SubPolys(Polys P1, Polys P2){
             count1++;
             count2++;
         }
-        // è°æŒ‡æ•°å¤§, è°åœ¨å‰é¢å…¥é“¾è¡¨
+        // Ë­Ö¸Êı´ó, Ë­ÔÚÇ°ÃæÈëÁ´±í
         else if(p1->e > p2->e){
-            p->c = p1->c - 0;                       // æ­¤æ—¶ï¼Œä¸p1.eç›¸ç­‰çš„p2.eçš„ç³»æ•°c=0
+            p->c = p1->c - 0;                       // ´ËÊ±£¬Óëp1.eÏàµÈµÄp2.eµÄÏµÊıc=0
             p->e = p1->e;
             count1++;
             p1 = p1->next;
         }
         else if(p1->e < p2->e){
-            p->c = 0 - p2->c;                      // æ­¤æ—¶ï¼Œä¸p2.eç›¸ç­‰çš„p1.eçš„ç³»æ•°c=0
+            p->c = 0 - p2->c;                      // ´ËÊ±£¬Óëp2.eÏàµÈµÄp1.eµÄÏµÊıc=0
             p->e = p2->e;
             count2++;
             p2 = p2->next;
         }
-        // å°¾æ’
+        // Î²²å
         if(p){
             p->next = NULL;
             newp->next = p;
@@ -236,15 +237,18 @@ Polys SubPolys(Polys P1, Polys P2){
             newP.length++;
         }
     }
+    // Ê£Óà²¿·Ö½ÓÈë½á¹û¶àÏîÊ½Á´±í
+    // P1ÓĞÊ£Óà£¬Ö±½Ó½ÓÈë
     if(count1 < P1.length){
         newP.length += P1.length - count1;
         newp->next = p1;
     }
+    // P2ÓĞÊ£Óà£¬¶ÔP2µÄÏµÊıÈ¡Ïà·´Êı½ÓÈë
     else if(count2 < P2.length){
         newP.length += P2.length - count2;
         while(count2 < P2.length){
             Poly* p = new Poly;
-            // å–ç›¸åæ•°
+            // È¡Ïà·´Êı
             p->c = -p2->c;
             p->e = p2->e;
             p->next = NULL;
@@ -259,10 +263,10 @@ Polys SubPolys(Polys P1, Polys P2){
     return newP;
 }
 
-// å¤šé¡¹å¼åœ¨xå¤„çš„å€¼
+// ¶àÏîÊ½ÔÚx´¦µÄÖµ
 float Polys_Val_In_X(Polys P){
     float X, sum = 0;
-    cout << "è¯·è¾“å…¥Xçš„å€¼: ";
+    cout << "ÇëÊäÈëXµÄÖµ: ";
     cin >> X;
     Poly* p = P.head->next;
     for(int i = 1; i <= P.length; i++, p = p->next){
@@ -271,17 +275,17 @@ float Polys_Val_In_X(Polys P){
     return sum;
 }
 
-// æ±‚å¤šé¡¹å¼Pçš„å¯¼æ•°Pâ€™
+// Çó¶àÏîÊ½PµÄµ¼ÊıP¡¯
 Polys Polys_Derivative(Polys P){
     Polys newP;
     InitPolys(newP);
 
-    // å°¾æŒ‡é’ˆ
+    // Î²Ö¸Õë
     Poly* newp = newP.head;
     Poly* p = P.head->next;
 
     for(int i = 1; i <= P.length; i++, p = p->next){
-        if(p->e == 0) continue;         // å¸¸æ•°é¡¹, å¯¼æ•°ä¸ºé›¶, è·³åˆ°ä¸‹ä¸€é¡¹
+        if(p->e == 0) continue;         // ³£ÊıÏî, µ¼ÊıÎªÁã, Ìøµ½ÏÂÒ»Ïî
 
         Poly* t = new Poly;
         t->c = p->c * p->e;
@@ -295,12 +299,12 @@ Polys Polys_Derivative(Polys P){
     return newP;
 }
 
-// ä¸¤ä¸ªå¤šé¡¹å¼ç›¸ä¹˜
+// Á½¸ö¶àÏîÊ½Ïà³Ë
 Polys MultiPolys(Polys P1, Polys P2){
-    Polys LastP;
+    Polys LastP;                            // ½á¹û¶àÏîÊ½
     InitPolys(LastP);
 
-    // if P1 == 0 Or P2 == 0
+    // if P1 == 0 Or P2 == 0, P1 X P2 = 0
     if(!P1.length || !P2.length) return LastP;
     // if P1 != 0 And P2 != 0
     Poly* p1 = P1.head->next;
@@ -309,7 +313,7 @@ Polys MultiPolys(Polys P1, Polys P2){
         InitPolys(TP);
         Poly* rear = TP.head;
 
-        // å°†P1çš„ç¬¬ié¡¹ä¸P2ç›¸ä¹˜ï¼Œç»“æœå­˜æ”¾åœ¨TPä¸­
+        // ½«P1µÄµÚiÏîÓëP2Ïà³Ë£¬½á¹û´æ·ÅÔÚTPÖĞ
         Poly* p2 = P2.head->next;
         for(int j = 1; j <= P2.length; j++){
             Poly* t = new Poly;
@@ -325,7 +329,7 @@ Polys MultiPolys(Polys P1, Polys P2){
             p2 = p2->next;
         }
 
-        // å°†TPåŠ å…¥LastPä¸­
+        // ½«TP¼ÓÈëLastPÖĞ
         LastP = AddPolys(LastP, TP);
 
         p1 = p1->next;
@@ -334,25 +338,25 @@ Polys MultiPolys(Polys P1, Polys P2){
     return LastP;
 }
 
-// èœå•
+// ²Ëµ¥
 void menu(){
-    cout << "|===============å¤šé¡¹å¼è®¡ç®—===============|" << endl;
-    cout << "|--------------1.å¤šé¡¹å¼åŠ æ³•--------------|" << endl;
-    cout << "|--------------2.å¤šé¡¹å¼å‡æ³•--------------|" << endl;
-    cout << "|--------------3.å¤šé¡¹å¼æ±‚å¯¼--------------|" << endl;
-    cout << "|-----------4.å¤šé¡¹å¼åœ¨Xå¤„çš„å€¼------------|" << endl;
-    cout << "|--------------5.å¤šé¡¹å¼ä¹˜æ³•--------------|" << endl;
-    cout << "|è¯·è¾“å…¥æ•°å­—ä»¥é€‰æ‹©åŠŸèƒ½, å…¶ä»–æ•°å­—é€€å‡º: ";
+    cout << "|===============¶àÏîÊ½¼ÆËã===============|" << endl;
+    cout << "|--------------1.¶àÏîÊ½¼Ó·¨--------------|" << endl;
+    cout << "|--------------2.¶àÏîÊ½¼õ·¨--------------|" << endl;
+    cout << "|--------------3.¶àÏîÊ½Çóµ¼--------------|" << endl;
+    cout << "|-----------4.¶àÏîÊ½ÔÚX´¦µÄÖµ------------|" << endl;
+    cout << "|--------------5.¶àÏîÊ½³Ë·¨--------------|" << endl;
+    cout << "|ÇëÊäÈëÊı×ÖÒÔÑ¡Ôñ¹¦ÄÜ, ÆäËûÊı×ÖÍË³ö: ";
 }
 
-// é€€å‡ºç¨‹åº
+// ÍË³ö³ÌĞò
 void quit(){
-    //system("clear");     // ä»…åœ¨Linuxç¯å¢ƒä¸‹ä½¿ç”¨
-    //system("cls");          // ä»…åœ¨Windowsç¯å¢ƒä¸‹ä½¿ç”¨
-    cout << "æ„Ÿè°¢ä½¿ç”¨ç¨€ç–å¤šé¡¹å¼è®¡ç®—å™¨ï¼\nå†è§ï¼" << endl;
+    //system("clear");     // ½öÔÚLinux»·¾³ÏÂÊ¹ÓÃ
+    //system("cls");          // ½öÔÚWindows»·¾³ÏÂÊ¹ÓÃ
+    cout << "¸ĞĞ»Ê¹ÓÃÏ¡Êè¶àÏîÊ½¼ÆËãÆ÷£¡\nÔÙ¼û£¡" << endl;
 }
 
-// ç”¨æˆ·ç•Œé¢
+// ÓÃ»§½çÃæ
 void UserGraph(){
     int flag = 0;
     do{
@@ -430,7 +434,7 @@ void UserGraph(){
                 Polys P3 = MultiPolys(P1, P2);
                 cout << '(';
                 OutPutPolys(P1, false);
-                cout << ") + (";
+                cout << ") X (";
                 OutPutPolys(P2, false);
                 cout << ") = ";
                 OutPutPolys(P3);
@@ -438,7 +442,7 @@ void UserGraph(){
                 P3 = MultiPolys(P2, P1);
                 cout << '(';
                 OutPutPolys(P2, false);
-                cout << ") + (";
+                cout << ") X (";
                 OutPutPolys(P1, false);
                 cout << ") = ";
                 OutPutPolys(P3);
@@ -449,9 +453,9 @@ void UserGraph(){
                 quit();
             } ;break;
         }
-        //ä¸‹é¢ä¸¤æ¡ä»…åœ¨Windowsç¯å¢ƒä¸‹ä½¿ç”¨
-        //system("pause");
-        //system("cls");
+        //ÏÂÃæÁ½Ìõ½öÔÚWindows»·¾³ÏÂÊ¹ÓÃ
+        system("pause");
+        system("cls");
         
     }while(flag);
 }
