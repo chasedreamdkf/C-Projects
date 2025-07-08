@@ -6,7 +6,7 @@ int main(){
     // printf("1111\n");
     cJSON* obj = cJSON_CreateObject();
     cJSON* num = cJSON_CreateNumber(100);
-    cJSON_bool ret =  cJSON_AddItemToObject(obj, "test", num);
+    cJSON_bool ret =  cJSON_AddItemToObject(obj, "num", num);
     if(ret == cJSON_True){
         printf("ret:%b\n", ret);
         printf("添加测试数字失败!\n");
