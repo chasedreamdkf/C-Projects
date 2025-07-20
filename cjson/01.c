@@ -29,5 +29,18 @@ int main(){
 
     char* s = cJSON_Print(obj);
     printf("%s\n", s);
+
+    cJSON* root = cJSON_CreateObject();
+    cJSON_AddItemToObject(root, "root", cJSON_CreateString(s));
+    char *msg = cJSON_Print(root);
+    printf("msg:\n%s\n", msg);
+
+    cJSON* data1 = cJSON_Parse(msg);
+    cJSON* data2 = cJSON_GetObjectItem(data1, "root");
+    char* msg2 = cJSON_GetStringValue(data2);
+
+    // char* msg2 = cJSON_Print(data3);
+    printf("msg2:\n%s\n", msg2);
+    printf("test: %b\n", 2);
     return 0;
 }
