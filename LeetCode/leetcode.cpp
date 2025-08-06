@@ -282,6 +282,31 @@ public:
     }
 };
 
+string Map[] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+// 电话号码的字母组合
+class Solution17 {
+public:
+    vector<string> letterCombinations(string digits) {
+        if(digits == "" || digits == "1") return vector<string>(0);
+        int index = digits[0] - '0';
+        // cout << Map[index] << endl;
+        vector<string> result(1);
+        vector<string> temp;
+        for(int i = 0; i < digits.length(); i++) {
+            index = digits[i] - '0';
+            // cout << index << endl;
+            for(int j = 0; j < result.size(); j++) {
+                for(int k = 0; k < Map[index].length(); k++) {
+                    temp.push_back(result[j]+Map[index][k]);
+                }
+            }
+            result = temp;
+            temp.clear();
+        }
+        return result;
+    }
+};
 int main() {
     // Solution s;
     // vector<int> arr = {1, 8, 6, 2, 5, 4, 8, 3, 7};
